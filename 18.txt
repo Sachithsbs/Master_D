@@ -1,0 +1,5 @@
+18
+docker build -t java-app .
+docker login
+docker tag java-app sachithsbs/java-app:v1
+docker push sachithsbs/java-app:v1
