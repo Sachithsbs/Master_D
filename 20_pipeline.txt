@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+    
+    environment {
+        IMAGE_NAME = "my-app"
+        CONTAINER_NAME = "my-app-container"
+    }
+    
+    tools {
+        maven 'Maven3'  ##need to be changed
+    }
+
+    stages {
+
+        stage('Clone Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Sachithsbs/webapp.git'
+            }
+        }
+
+        stage('Build WAR') {
+            steps {
+                bat 'mvn clean package'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t %IMAGE_NAME% .'
+            }
+        }
+
+        stage('Stop Old Container') {
+            steps {
+                bat 'docker stop %CONTAINER_NAME% || exit 0'
+                bat 'docker rm %CONTAINER_NAME% || exit 0'
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                bat 'docker run -d -p 8087:8080 --name my-app-container my-app'
+            }
+        }
+    }
+}
