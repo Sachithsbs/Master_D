@@ -16,4 +16,4 @@ docker build -t my-python-app .
 docker images
 docker run my-python-app
 
-docker run -p 5020:5000 my-python-app1
+docker run -p 5020:5000 my-python-app1   # in app.py port be 5000
