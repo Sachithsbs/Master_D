@@ -1,0 +1,327 @@
+-----1-----------
+
+mkdir Git_Lab_Experiment1
+cd Git_Lab_Experiment1
+git init
+ls
+ls -a
+git config --global user.name "Your Name"
+git config --global user.email your_email@example.com
+echo "This is my first Git experiment" > README.txt
+git status
+git add README.txt
+git add .
+git status
+git commit -m "Initial commit"
+echo "Git tracks file changes" >> README.txt
+git status
+git add README.txt
+git commit -m "Updated README file"
+git log
+
+------2-------
+cd sec_exp
+git init
+git branch
+git branch feature-branch
+git checkout feature-branch
+git status
+git add .
+git commit -m "Added new feature in feature branch"
+git checkout main
+git status
+git add .
+git commit -m "Updated file in main branch"
+git merge feature-branch
+git add .
+git commit
+git log --oneline
+git branch -d feature-branch
+
+------3--------
+
+git config --global user.name "Your Name"
+git config --global user.email "your_email@example.com"
+git config --global --list
+cd Desktop
+git clone https://github.com/YourUsername/git-lab-demo.git
+cd git-lab-demo
+git init
+git remote add origin https://github.com/YourUsername/git-lab-demo.git
+git pull origin main
+touch main.py
+git add main.py
+git commit -m "Add main.py file"
+git push -u origin main
+git fetch origin
+git log origin/main
+git merge origin/main
+git pull origin main
+
+
+------4-------
+
+git clone <repository-url>
+cd Git_PullRequests
+touch file1.txt
+echo "This file is created in master branch" > file1.txt
+git status
+git add file1.txt
+git commit -m "Initial commit in master"
+git push origin main
+git pull origin main
+git branch feature-1
+git checkout feature-1
+echo "This change is from feature-1 branch" >> file1.txt
+touch feature.txt
+echo "Feature branch file" > feature.txt
+git status
+git add .
+git commit -m "Changes done in feature-1"
+git push origin feature-1
+git checkout master
+git pull origin master
+git log --oneline
+git branch -d feature-1
+git push origin --delete feature-1
+
+
+-------5-------
+git pull origin main
+git tag v1.0
+git tag
+git tag -a v1.2 -m "v1.2 Created"
+git tag
+git show v1.0
+git tag -l "v1.*"
+git push origin v1.0
+git tag v2.0
+git push --tags
+git tag -d v1.0
+git push origin -d v1.0
+
+
+
+6.
+mvn package
+sample-app-1.0-SNAPSHOT.jar
+mvn clean
+mvn site
+mvn clean
+mvn package
+cd target
+java -cp sample-app-1.0-SNAPSHOT.jar com.bnmit.BankService
+
+7
+
+Steps
+Step 1: Create GitHub Repository
+Go to GitHub
+Create repository: sample_jenkins_project
+Add file: Hello.java
+public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Hello from Jenkins Build!");
+    }
+}
+Step 2: Open Jenkins
+Open browser
+Go to:
+http://localhost:8085
+Login:
+Username: jenkins
+Password: jenkins
+Step 3: Create Freestyle Job
+Click New Item
+Enter name: Freestyle_GitHub_Job
+Select Freestyle Project
+Click OK
+Step 4: Configure Source Code Management
+Select Git
+Enter Repository URL:
+https://github.com/username/sample_jenkins_project
+Add credentials (if required)
+Branch:
+*/main
+Step 5: Configure Build Steps
+Click Add Build Step
+Select Execute Windows Batch Command
+Enter:
+javac Hello.java
+java Hello > output.txt
+👉 This will:
+Compile program
+Run program
+Save output in output.txt
+Step 6: Archive Artifacts
+Scroll to Post-build Actions
+Click Add post-build action
+Select Archive the artifacts
+Enter:
+output.txt
+Step 7: Save and Build
+Click Save
+Click Build Now
+
+
+8
+
+Steps
+Part 1: Create GitHub Repository
+Create a repository in GitHub
+Name: Github_Bankservice
+Add the following file:
+File Name: BankService.java
+public class BankService {
+
+    static class BankAccount {
+        private double balance;
+
+        public BankAccount(double initialBalance) {
+            if (initialBalance < 0) {
+                throw new IllegalArgumentException("Initial balance cannot be negative");
+            }
+            this.balance = initialBalance;
+        }
+
+        public void deposit(double amount) {
+            if (amount <= 0) {
+                throw new IllegalArgumentException("Deposit must be positive");
+            }
+            balance += amount;
+        }
+
+        public void withdraw(double amount) {
+            if (amount <= 0 || amount > balance) {
+                throw new IllegalArgumentException("Invalid withdrawal");
+            }
+            balance -= amount;
+        }
+
+        public double getBalance() {
+            return balance;
+        }
+    }
+
+    public static void main(String[] args) {
+        BankAccount acc = new BankAccount(5000);
+
+        System.out.println("Initial Balance: " + acc.getBalance());
+
+        acc.deposit(700);
+        System.out.println("Balance after deposit of 700: " + acc.getBalance());
+
+        acc.withdraw(100);
+        System.out.println("Balance after withdrawal of 100: " + acc.getBalance());
+
+        System.out.println("Final Balance: " + acc.getBalance());
+    }
+}
+Part 2: Create Jenkins Job
+Open Jenkins → http://localhost:8085
+Click New Item
+Name: GitHub_BankApplication
+Select Freestyle Project
+Click OK
+Add description
+Part 3: Configure Source Code Management
+Select Git
+Enter Repository URL:
+https://github.com/username/Github_Bankservice
+Add Credentials:
+GitHub Username
+GitHub Password / Token
+In Branches to Build:
+*/main   OR   */master
+Part 4: Configure Build Triggers
+In Build Triggers section:
+Enable:
+✅ GitHub hook trigger for GITScm polling
+✅ Poll SCM
+In Schedule field:
+* * * * *
+Part 5: Add Build Steps
+Click Add Build Step → Execute Windows Batch Command
+Enter:
+javac BankService.java
+java BankService
+Part 6: Execute Build
+Click Save
+Click Build Now
+
+9
+Steps
+Step 1: Create GitHub Repository
+Go to GitHub
+Create repository: jenkins-pipeline-demo
+Step 2: Add Project Files
+1. Java Program (Hello.java)
+public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Pipeline Build Successful!");
+    }
+}
+2. Jenkinsfile
+
+Create a file named Jenkinsfile in the repository:
+
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Build') {
+            steps {
+                echo 'Building the project...'
+                bat 'javac Hello.java'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                bat 'java Hello'
+            }
+        }
+
+    }
+}
+Step 3: Configure Jenkins Pipeline Job
+Open Jenkins → http://localhost:8085
+Click New Item
+Enter name: Pipeline_Job
+Select Pipeline
+Click OK
+Step 4: Configure Pipeline
+Scroll to Pipeline section
+Select:
+Definition: Pipeline script from SCM
+SCM: Git
+Enter Repository URL:
+https://github.com/username/jenkins-pipeline-demo
+Branch:
+*/main
+Script Path:
+Jenkinsfile
+Step 5: Build the Pipeline
+Click Save
+Click Build Now
+Step 6: View Output
+Click build → Console Output
+Click Pipeline View (shows stages visually)
+
+
+12
+<dependencies>
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.13.2</version>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+
+
+
+
+
